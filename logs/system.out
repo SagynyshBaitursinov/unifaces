@@ -1,7 +1,5 @@
 Listening for transport dt_socket at address: 8000
-20:26:13,097 INFO  ~ Starting /home/sagynysh/workspace/unifaces2
-20:26:14,095 WARN  ~ You're running Play! in DEV mode
-20:26:14,180 INFO  ~ Listening for HTTP at /127.0.0.1:9000 (Waiting a first request to start) ...
+22:12:35,707 INFO  ~ Starting /home/sagynysh/workspace/unifaces2
+22:12:36,561 WARN  ~ You're running Play! in DEV mode
+22:12:36,615 INFO  ~ Listening for HTTP at /127.0.0.1:9000 (Waiting a first request to start) ...
 ~ Server is up and running
-20:26:29,500 INFO  ~ Connected to jdbc:postgresql:unifaces for default
-20:26:31,694 INFO  ~ Application 'unifaces2' is now started !

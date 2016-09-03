@@ -48,7 +48,7 @@ function next() {
 	$('#myModal').modal('hide');
 	enter = false;
 	$.ajax({
-		  url: "application/next"
+		  url: "/unifaces/application/next"
 		}).done(function(data, textStatus, xhr) {
 			try {
 				var obj = jQuery.parseJSON(data);

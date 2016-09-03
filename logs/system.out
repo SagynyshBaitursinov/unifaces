@@ -1,5 +1,0 @@
-Listening for transport dt_socket at address: 8000
-22:12:35,707 INFO  ~ Starting /home/sagynysh/workspace/unifaces2
-22:12:36,561 WARN  ~ You're running Play! in DEV mode
-22:12:36,615 INFO  ~ Listening for HTTP at /127.0.0.1:9000 (Waiting a first request to start) ...
-~ Server is up and running

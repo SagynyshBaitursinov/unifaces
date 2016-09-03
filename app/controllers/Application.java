@@ -21,26 +21,28 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
-		if (request.cookies.get("JSESSIONID") == null) {
-            session.clear();
-    		redirect("http://" + request.host + "?app=unifaces");
-		};
-		String auth = checkAuth(request.host, request.cookies.get("JSESSIONID").value);
-		if (auth.equals("anon")) {
-			redirect("http://" + request.host + "?app=unifaces");
+		if (!request.action.equals("Application.getPhoto") && !request.action.equals("Application.top")) {
+			if (request.cookies.get("JSESSIONID") == null) {
+	            session.clear();
+	    		redirect("http://" + request.host + "?app=unifaces");
+			};
+			String auth = checkAuth(request.host, request.cookies.get("JSESSIONID").value);
+			if (auth.equals("anon")) {
+				redirect("http://" + request.host + "?app=unifaces");
+			}
+	    	Student student = Student.find("email = ?", auth).first();
+	    	LocalUser localUser;
+	    	if (student.localUser == null) {
+	    		LocalUser newLocalUser = new LocalUser();
+	    		newLocalUser.points = 0;
+	    		newLocalUser.student = student;
+	    		newLocalUser.save();
+	    		localUser = newLocalUser;
+	    	} else {
+	    		localUser = student.localUser;
+	    	}
+			session.put("userid", localUser.id);
 		}
-    	Student student = Student.find("email = ?", auth).first();
-    	LocalUser localUser;
-    	if (student.localUser == null) {
-    		LocalUser newLocalUser = new LocalUser();
-    		newLocalUser.points = 0;
-    		newLocalUser.student = student;
-    		newLocalUser.save();
-    		localUser = newLocalUser;
-    	} else {
-    		localUser = student.localUser;
-    	}
-		session.put("userid", localUser.id);
 	}
 	
     public static void index() {

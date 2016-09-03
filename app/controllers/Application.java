@@ -21,7 +21,7 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
-/*		if (request.cookies.get("JSESSIONID") == null) {
+		if (request.cookies.get("JSESSIONID") == null) {
             session.clear();
     		redirect("http://" + request.host + "?app=unifaces");
 		};
@@ -39,7 +39,7 @@ public class Application extends Controller {
     		localUser = newLocalUser;
     	} else {
     		localUser = student.localUser;
-    	}*/
+    	}
 		session.put("userid", 1);
 	}
 	

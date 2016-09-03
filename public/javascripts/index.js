@@ -15,11 +15,11 @@ $(document).ready(function() {
 	$('#myModal').modal('hide');
 	checkColor();
 	$("#leaderboard").click(function() {
-		window.location.href = "top";
+		window.location.href = "/unifaces/application/top";
 	});
 	$(".list-group-item").click(function() {
 		$.ajax({
-			  url: "application/answer?questionId=" + this.parentElement.id + "&answer=" + this.id
+			  url: "/unifaces/application/answer?questionId=" + this.parentElement.id + "&answer=" + this.id
 			}).done(function(data, textStatus, xhr) {
 			    try {
 			    	var obj = jQuery.parseJSON(data);

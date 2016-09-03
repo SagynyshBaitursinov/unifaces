@@ -24,4 +24,6 @@ public class LocalUser extends GenericModel {
 	public Student student;
 	
     public int points;
+    
+    public Question lastQuestion;
 }

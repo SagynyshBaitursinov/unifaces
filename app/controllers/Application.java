@@ -21,7 +21,7 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
-		if (request.cookies.get("JSESSIONID") == null) {
+/*		if (request.cookies.get("JSESSIONID") == null) {
             session.clear();
     		redirect("http://" + request.host + "?app=unifaces");
 		};
@@ -33,14 +33,14 @@ public class Application extends Controller {
     	LocalUser localUser;
     	if (student.localUser == null) {
     		LocalUser newLocalUser = new LocalUser();
-    		newLocalUser.points = 10;
+    		newLocalUser.points = 0;
     		newLocalUser.student = student;
     		newLocalUser.save();
     		localUser = newLocalUser;
     	} else {
     		localUser = student.localUser;
-    	}
-		session.put("userid", localUser.id);
+    	}*/
+		session.put("userid", 1);
 	}
 	
     public static void index() {
@@ -78,7 +78,7 @@ public class Application extends Controller {
     		renderText("login");
     	}
     	Question question = Question.findById(questionId);
-    	if (question == null || question.answered) {
+    	if (question == null || question.answered || question.localUser.id != localUser.id) {
     		renderText("error");
     	}
     	question.answered = true;
@@ -86,15 +86,22 @@ public class Application extends Controller {
     	Student right = Student.findById(question.rightAnswer);
     	String info = right.name + " " + right.school + " " + right.nuid.substring(0, 4);
     	if (question.rightAnswer == answer) {
-    		localUser.points += 30;
+    		localUser.points += 20;
+    		localUser.lastQuestion = null;
     		localUser.save();
     		renderText("{\"questionId\": \"" + questionId + "\", \"correct\": \"true\", \"info\": \"" + info + "\"}");
     	} else {
+    		localUser.points -= 10;
+    		localUser.lastQuestion = null;
+    		localUser.save();
     		renderText("{\"questionId\": \"" + questionId + "\", \"correct\": \"false\", \"info\": \"" + info + "\"}");
     	}
     }
     
     private static Question getQuestion(LocalUser localUser) {
+    	if (localUser.lastQuestion != null) {
+    		return localUser.lastQuestion;
+    	}
     	List<Student> students = Student.findAll();
     	Random random = new Random();
     	Student chosen = students.get(random.nextInt(students.size()));
@@ -112,7 +119,7 @@ public class Application extends Controller {
     	} while (chosen4.id == chosen3.id || chosen4.id == chosen2.id || chosen4.id == chosen.id || chosen4.isMale != chosen.isMale);
     	Question question = new Question(chosen, chosen2, chosen3, chosen4, localUser);
     	question.save();
-    	localUser.points = localUser.points - 10;
+    	localUser.lastQuestion = question;
     	localUser.save();
     	return question;
     }

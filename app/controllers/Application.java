@@ -21,7 +21,7 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
-		if (!request.action.equals("Application.getPhoto") && !request.action.equals("Application.top")) {
+		if (!session.contains("userid")) {
 			if (request.cookies.get("JSESSIONID") == null) {
 	            session.clear();
 	    		redirect("http://" + request.host + "?app=unifaces");

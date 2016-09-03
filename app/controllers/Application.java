@@ -40,7 +40,7 @@ public class Application extends Controller {
     	} else {
     		localUser = student.localUser;
     	}
-		session.put("userid", 1);
+		session.put("userid", localUser.id);
 	}
 	
     public static void index() {

@@ -31,6 +31,9 @@ public class Application extends Controller {
 				redirect("http://" + request.host + "?app=unifaces");
 			}
 	    	Student student = Student.find("email = ?", auth).first();
+	    	if (student == null) {
+	    		youAreNotWithUs();
+	    	}
 	    	LocalUser localUser;
 	    	if (student.localUser == null) {
 	    		LocalUser newLocalUser = new LocalUser();
@@ -58,11 +61,18 @@ public class Application extends Controller {
     
     public static void getPhoto(int questionId) {
     	Question question = Question.findById(questionId);
+    	if (question != null) {
+	    	try {
+	    		File file = new File(Play.applicationPath.getCanonicalPath().toString() + "/public/photos/" + question.rightAnswer + ".jpg");
+				if (file.exists()) {
+					renderBinary(file);
+					return;
+				}
+	    	} catch (IOException e) {}
+    	}
     	try {
-			renderBinary(new File(Play.applicationPath.getCanonicalPath().toString() + "/public/photos/" + question.rightAnswer + ".jpg"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			renderBinary(new File(Play.applicationPath.getCanonicalPath().toString() + "/public/photos/no.jpg"));
+		} catch (IOException e) {}
     }
     
     public static void next() {
@@ -72,6 +82,10 @@ public class Application extends Controller {
     	}
     	Question question = getQuestion(localUser);
     	renderText(question.toJson());
+    }
+    
+    public static void youAreNotWithUs() {
+    	renderText("NU has deleted you from its databases, sorry :(");
     }
     
     public static void answer(int questionId, int answer) {

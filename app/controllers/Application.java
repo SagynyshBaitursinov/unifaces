@@ -22,7 +22,6 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
-		Date date = new Date();
 		if (request.cookies.get("JSESSIONID") == null) {
             session.clear();
     		redirect("http://" + request.host + "?app=unifaces");
@@ -46,10 +45,6 @@ public class Application extends Controller {
     		localUser = student.localUser;
     	}
 		session.put("userid", localUser.id);
-		Date date2 = new Date();
-		long duration  = date.getTime() - date2.getTime();
-		long diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
-		Logger.info("date2: " + diffInSeconds);
 	}
 	
     public static void index() {

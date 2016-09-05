@@ -98,9 +98,10 @@ function startLoop() {
 function doSomething() {
 	if (cnt) {
 		var nmb = parseInt($("#counter-number").html());
-		if (nmb > 0) {
+		if (nmb > 1) {
 			$("#counter-number").html(nmb - 1);
 		} else {
+			$("#counter-number").html(0);
 			cnt = false;
 			$("#modal-title").html("<b>Time is up! -10</b>");
 			$("#points").html(parseInt($("#points").html()) - 10);

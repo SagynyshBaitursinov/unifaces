@@ -14,7 +14,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import jobs.StudentLoader;
 import models.*;
@@ -115,49 +114,28 @@ public class Application extends Controller {
     }
     
     private static Question getQuestion(LocalUser localUser) {
-    	Date date = new Date();
     	if (localUser.lastQuestion != null) {
     		return localUser.lastQuestion;
     	}
     	List<Student> students = StudentLoader.students;
     	Random random = new Random();
     	Student chosen = students.get(random.nextInt(students.size()));
-    	Date date1 = new Date();
-		long duration  = date.getTime() - date1.getTime();
-		long diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
-		Logger.info("date1: " + diffInSeconds);
     	Student chosen2 = null;
     	do {
     		chosen2 = students.get(random.nextInt(students.size()));
     	} while (chosen2.id == chosen.id || chosen2.isMale != chosen.isMale);
-    	Date date2 = new Date();
-		duration  = date1.getTime() - date2.getTime();
-		diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
-		Logger.info("date2: " + diffInSeconds);
     	Student chosen3 = null;
     	do {
     		chosen3 = students.get(random.nextInt(students.size()));
     	} while (chosen3.id == chosen2.id || chosen3.id == chosen.id || chosen3.isMale != chosen.isMale);
-    	Date date3 = new Date();
-		duration  = date2.getTime() - date3.getTime();
-		diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
-		Logger.info("date3: " + diffInSeconds);
     	Student chosen4 = null;
     	do {
     		chosen4 = students.get(random.nextInt(students.size()));
     	} while (chosen4.id == chosen3.id || chosen4.id == chosen2.id || chosen4.id == chosen.id || chosen4.isMale != chosen.isMale);
-    	Date date4 = new Date();
-		duration  = date3.getTime() - date4.getTime();
-		diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
-		Logger.info("date4: " + diffInSeconds);
     	Question question = new Question(chosen, chosen2, chosen3, chosen4, localUser);
     	question.save();
     	localUser.lastQuestion = question;
     	localUser.save();
-    	Date date5 = new Date();
-		duration  = date5.getTime() - date4.getTime();
-		diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
-		Logger.info("date5: " + diffInSeconds);
     	return question;
     }
     

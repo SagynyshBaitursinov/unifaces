@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import models.*;
 
@@ -21,31 +22,34 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
-		if (!session.contains("userid")) {
-			if (request.cookies.get("JSESSIONID") == null) {
-	            session.clear();
-	    		redirect("http://" + request.host + "?app=unifaces");
-			};
-			String auth = checkAuth(request.host, request.cookies.get("JSESSIONID").value);
-			if (auth.equals("anon")) {
-				redirect("http://" + request.host + "?app=unifaces");
-			}
-	    	Student student = Student.find("email = ?", auth).first();
-	    	if (student == null) {
-	    		youAreNotWithUs();
-	    	}
-	    	LocalUser localUser;
-	    	if (student.localUser == null) {
-	    		LocalUser newLocalUser = new LocalUser();
-	    		newLocalUser.points = 0;
-	    		newLocalUser.student = student;
-	    		newLocalUser.save();
-	    		localUser = newLocalUser;
-	    	} else {
-	    		localUser = student.localUser;
-	    	}
-			session.put("userid", localUser.id);
+		Date date = new Date();
+		if (request.cookies.get("JSESSIONID") == null) {
+            session.clear();
+    		redirect("http://" + request.host + "?app=unifaces");
+		};
+		String auth = checkAuth(request.host, request.cookies.get("JSESSIONID").value);
+		if (auth.equals("anon")) {
+			redirect("http://" + request.host + "?app=unifaces");
 		}
+    	Student student = Student.find("email = ?", auth).first();
+    	if (student == null) {
+    		youAreNotWithUs();
+    	}
+    	LocalUser localUser;
+    	if (student.localUser == null) {
+    		LocalUser newLocalUser = new LocalUser();
+    		newLocalUser.points = 0;
+    		newLocalUser.student = student;
+    		newLocalUser.save();
+    		localUser = newLocalUser;
+    	} else {
+    		localUser = student.localUser;
+    	}
+		session.put("userid", localUser.id);
+		Date date2 = new Date();
+		long duration  = date.getTime() - date2.getTime();
+		long diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
+		Logger.info("date2: " + diffInSeconds);
 	}
 	
     public static void index() {
@@ -115,6 +119,7 @@ public class Application extends Controller {
     }
     
     private static Question getQuestion(LocalUser localUser) {
+    	Date date = new Date();
     	if (localUser.lastQuestion != null) {
     		return localUser.lastQuestion;
     	}
@@ -137,6 +142,10 @@ public class Application extends Controller {
     	question.save();
     	localUser.lastQuestion = question;
     	localUser.save();
+    	Date date2 = new Date();
+		long duration  = date.getTime() - date2.getTime();
+		long diffInSeconds = TimeUnit.MILLISECONDS.toMillis(duration);
+		Logger.info("date3: " + diffInSeconds);
     	return question;
     }
     

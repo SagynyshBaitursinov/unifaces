@@ -14,9 +14,6 @@ $(document).ready(function() {
 	});
 	$('#myModal').modal('hide');
 	checkColor();
-	$("#leaderboard").click(function() {
-		window.location.href = "/unifaces/application/top";
-	});
 	$(".list-group-item").click(function() {
 		$.ajax({
 			  url: "/unifaces/application/answer?questionId=" + this.parentElement.id + "&answer=" + this.id

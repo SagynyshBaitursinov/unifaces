@@ -55,7 +55,7 @@ public class Application extends Controller {
     }
     
     public static void top() {
-    	List<LocalUser> localUsers = JPA.em().createQuery("Select u from LocalUser u order by points desc", LocalUser.class).setMaxResults(10).getResultList();
+    	List<LocalUser> localUsers = JPA.em().createQuery("Select u from LocalUser u order by points desc", LocalUser.class).setMaxResults(20).getResultList();
     	render(localUsers);
     }
     

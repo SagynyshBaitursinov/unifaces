@@ -1,16 +1,16 @@
 #{extends 'main.html' /}
-<style>ul
-{
-    list-style-type: decimal;
-    
-}
-</style>
+#{set 'moreStyles'}
+	<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/top.css'}">
+#{/set}
 <div>
-	<h1><a href="@{Application.index()}">Unifaces</a></h1>
-	<b>Our leaders:</b>
-	<ul>
-		#{list items:localUsers, as:'localUser'}
-		<li>${localUser.student.name}: ${localUser.points}</li>
-		#{/list}
-	</ul>
+	<div style="margin-bottom: 20px">
+		<a href="@{Application.index()}">Unifaces</a></div>
+	<div>
+		<b>Our leaders:</b>
+		<ul>
+			#{list items:localUsers, as:'localUser'}
+			<li>${localUser.student.name}: ${localUser.points}</li>
+			#{/list}
+		</ul>
+	</div>
 </div>

@@ -175,7 +175,7 @@ public class Application extends Controller {
     	Date date2 = new Date();
     	long duration  = date2.getTime() - date.getTime();
     	long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(duration);
-    	if (diffInSeconds > 15) {
+    	if (diffInSeconds > 10) {
     		return true;
     	} else {
     		return false;

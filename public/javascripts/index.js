@@ -64,7 +64,7 @@ function next() {
 				window.location.href = "/unifaces";
 			}
 			cnt = true;
-			$("#counter").html("<center id=\"counter-number\">15</center>");
+			$("#counter").html("<center id=\"counter-number\">10</center>");
 			$("#ava").attr("src", "/unifaces/application/getPhoto" + "?questionId=" + obj.id);
 			$("ul").toArray()[0].id = obj.id;
 			$("li").toArray()[0].id = obj.id1;

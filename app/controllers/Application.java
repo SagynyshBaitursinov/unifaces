@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import jobs.StudentLoader;
 import models.*;
@@ -96,6 +97,9 @@ public class Application extends Controller {
     	if (question == null || question.answered || question.localUser.id != localUser.id) {
     		renderText("error");
     	}
+    	if (question.createdDate != null && late(question.createdDate)) {
+    		renderText("error");
+    	}
     	question.answered = true;
     	question.save();
     	Student right = Student.findById(question.rightAnswer);
@@ -115,7 +119,7 @@ public class Application extends Controller {
     
     private static Question getQuestion(LocalUser localUser) {
     	if (localUser.lastQuestion != null) {
-    		return localUser.lastQuestion;
+    		localUser.points -=10;
     	}
     	List<Student> students = StudentLoader.students;
     	Random random = new Random();
@@ -165,5 +169,16 @@ public class Application extends Controller {
 				connection.disconnect();
 			}
 		}
+    }
+    
+    private static boolean late(Date date) {
+    	Date date2 = new Date();
+    	long duration  = date2.getTime() - date.getTime();
+    	long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(duration);
+    	if (diffInSeconds > 15) {
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 }

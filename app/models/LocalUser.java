@@ -25,5 +25,7 @@ public class LocalUser extends GenericModel {
 	
     public int points;
     
+    @OneToOne
+    @JoinColumn(name="lastQuestion_")
     public Question lastQuestion;
 }

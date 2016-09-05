@@ -15,6 +15,10 @@ h1 {
     margin-bottom: 25px !important;
 }
 
+#counter {
+	background-color:#87CEFA !important;
+}
+
 body {
 	background-color: #87CEFA !important;
 }

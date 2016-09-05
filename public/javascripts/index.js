@@ -1,4 +1,7 @@
 var enter = false;
+var cnt = true;
+var iFrequency = 1000;
+var myInterval = 0;
 
 $(document).keypress(function(e) {
     if (e.keyCode == 13 && enter) {
@@ -8,6 +11,7 @@ $(document).keypress(function(e) {
 });
 
 $(document).ready(function() {
+	startLoop();
 	$('#myModal').modal({
 	    backdrop: 'static',
 	    keyboard: false
@@ -15,9 +19,16 @@ $(document).ready(function() {
 	$('#myModal').modal('hide');
 	checkColor();
 	$(".list-group-item").click(function() {
+		if (this.id == "counter") {
+			return;
+		}
+		if (!cnt) {
+			return;
+		}
 		$.ajax({
 			  url: "/unifaces/application/answer?questionId=" + this.parentElement.id + "&answer=" + this.id
 			}).done(function(data, textStatus, xhr) {
+				cnt = false;
 			    try {
 			    	var obj = jQuery.parseJSON(data);
 			    } catch(e) {
@@ -52,6 +63,8 @@ function next() {
 			} catch (e) {
 				window.location.href = "/unifaces";
 			}
+			cnt = true;
+			$("#counter").html("<center id=\"counter-number\">15</center>");
 			$("#ava").attr("src", "/unifaces/application/getPhoto" + "?questionId=" + obj.id);
 			$("ul").toArray()[0].id = obj.id;
 			$("li").toArray()[0].id = obj.id1;
@@ -74,5 +87,28 @@ function checkColor() {
 		$("#points").removeClass("red").addClass("green");
 	} else {
 		$("#points").removeClass("red").removeClass("green");
+	}
+}
+
+function startLoop() {
+    if (myInterval > 0) clearInterval(myInterval);
+    myInterval = setInterval("doSomething()", iFrequency);
+}
+
+function doSomething() {
+	if (cnt) {
+		var nmb = parseInt($("#counter-number").html());
+		if (nmb > 0) {
+			$("#counter-number").html(nmb - 1);
+		} else {
+			cnt = false;
+			$("#modal-title").html("<b>Time is up! -10</b>");
+			$("#points").html(parseInt($("#points").html()) - 10);
+			$("#modal-title").removeClass("green").addClass("red");
+			$('#modal-body').html("<center>:(</center>");
+			$('#myModal').modal('show');
+			enter = true;
+			checkColor();
+		}
 	}
 }

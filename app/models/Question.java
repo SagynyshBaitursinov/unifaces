@@ -1,7 +1,10 @@
 package models;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Random;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +19,7 @@ import play.db.jpa.GenericModel;
 @Entity
 @Table(name = "question_")
 public class Question extends GenericModel {
-
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
@@ -35,6 +38,8 @@ public class Question extends GenericModel {
 	@Transient
 	public Student second;
 	
+	public Date createdDate;
+	
 	@Transient
 	public Student third;
 	
@@ -49,6 +54,7 @@ public class Question extends GenericModel {
 		this.third = third;
 		this.fourth = fourth;
 		this.localUser = localUser;
+		this.createdDate = new Date();
 		Student dub;
 		switch (new Random().nextInt(4)) {
 			case 1:

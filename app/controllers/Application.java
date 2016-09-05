@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import jobs.StudentLoader;
 import models.*;
 
 public class Application extends Controller {
@@ -118,7 +119,7 @@ public class Application extends Controller {
     	if (localUser.lastQuestion != null) {
     		return localUser.lastQuestion;
     	}
-    	List<Student> students = Student.findAll();
+    	List<Student> students = StudentLoader.students;
     	Random random = new Random();
     	Student chosen = students.get(random.nextInt(students.size()));
     	Date date1 = new Date();

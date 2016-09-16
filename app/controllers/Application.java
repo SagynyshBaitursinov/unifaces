@@ -23,6 +23,9 @@ public class Application extends Controller {
 
 	@Before
 	public static void checkUser() {
+		if (request.action.equals("Application.youAreNotWithUs")) {
+			return;
+		}
 		if (request.cookies.get("JSESSIONID") == null) {
             session.clear();
     		redirect("http://" + request.host + "?app=unifaces");
@@ -85,7 +88,7 @@ public class Application extends Controller {
     }
     
     public static void youAreNotWithUs() {
-    	renderText("NU has deleted you from its databases, sorry :(");
+    	renderText("NU has deleted you from its databases or for some reason you are not in unifaces, sorry :(");
     }
     
     public static void answer(int questionId, int answer) {
@@ -105,12 +108,16 @@ public class Application extends Controller {
     	Student right = Student.findById(question.rightAnswer);
     	String info = right.name + " " + right.school + " " + right.nuid.substring(0, 4);
     	if (question.rightAnswer == answer) {
-    		localUser.points += 20;
+    		if (localUser.points < 9999999) {
+    			localUser.points += 20;
+    		}
     		localUser.lastQuestion = null;
     		localUser.save();
     		renderText("{\"questionId\": \"" + questionId + "\", \"correct\": \"true\", \"info\": \"" + info + "\"}");
     	} else {
-    		localUser.points -= 10;
+    		if (localUser.points > -9999999) {
+    			localUser.points -= 10;
+    		}
     		localUser.lastQuestion = null;
     		localUser.save();
     		renderText("{\"questionId\": \"" + questionId + "\", \"correct\": \"false\", \"info\": \"" + info + "\"}");

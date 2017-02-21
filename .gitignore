@@ -3,3 +3,6 @@ eclipse/
 logs/
 server.pid
 test-result/
+.settings
+.project
+documentation/
